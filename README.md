@@ -277,6 +277,8 @@ interface PageConfig {
           }else{
             window.location.href = LinkInstance.solution.downloadUrl;
           }
+        }else if(LinkInstance.solution.type === "universalLink"){
+          // universalLink 唤起应当由服务端提供一个带重定向到appstore的universallink地址。因此，此处不应写逻辑，友盟会在近期上线universalLink 重定向功能。
         }
       },
     },
