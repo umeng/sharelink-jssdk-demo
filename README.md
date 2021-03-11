@@ -2,6 +2,9 @@
 
 link 唤起技术和追踪模块 api 使用说明
 
+为提高国内访问速度，以下仓库实时同步
+* `gitee` https://gitee.com/umengplus/sharelink-jssdk-demo
+* `github` https://github.com/umeng/sharelink-jssdk-demo
 ---
 
 # 1.快速开始
@@ -267,6 +270,7 @@ interface PageConfig {
         b: "xx",
       },
       selector: "#xxl",
+      
       useOpenInBrowerTips: "default",
       proxyOpenDownload: function (defaultAction, LinkInstance){
         if (LinkInstance.solution.type === "scheme"){
