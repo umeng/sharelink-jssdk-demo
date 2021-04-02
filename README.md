@@ -48,9 +48,6 @@ link 唤起技术和追踪模块 api 使用说明
 </script>
 ```
 
-## DEMO
-
-[https://share.umeng.com/demo/ulink/index.html](https://share.umeng.com/demo/ulink/index.html)
 
 # 2. API 文档
 
@@ -252,9 +249,13 @@ interface PageConfig {
 }
 ```
 
-## 代码示例
+# Live DEMO 演示程序
 
-### 1. 自定义打开下载提示行为
+[https://share.umeng.com/demo/ulink/index.html](https://share.umeng.com/demo/ulink/index.html)
+
+# 代码示例
+
+## 1. 自定义打开下载提示行为
 
 该代码效果为如未安装则直接跳转下载地址
 
@@ -290,7 +291,7 @@ interface PageConfig {
 </script>
 ```
 
-### 2. 自定义去浏览器中打开提示蒙层
+## 2. 自定义去浏览器中打开提示蒙层
 
 ```html
 <button id="xxl">点我唤起</button>
