@@ -276,7 +276,7 @@ interface PageConfig {
       proxyOpenDownload: function (defaultAction, LinkInstance){
         if (LinkInstance.solution.type === "scheme"){
           // qq或者微信环境特殊处理下
-          if (ULink.isWechat || ULink.isQQ)) {
+          if (ULink.isWechat || ULink.isQQ) {
             // 在qq或者微信环境执行内置逻辑，具体内置逻辑为:当设置了useOpenInBrowerTips字段时，qq&&微信&&scheme时，启用蒙层提示去浏览器打开
             defaultAction();
           }else{
