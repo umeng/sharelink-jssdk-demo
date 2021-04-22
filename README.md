@@ -141,7 +141,7 @@ type LinkOption = {
   useOpenInBrowerTips?: string | ProxyOpenInBrowerTips; // 是否在微信和qq中使在浏览器中打开的提示，当值为string类型时，默认'default',值为function时，需要该函数返回蒙层html片段。
   useLoading?: string | [ProxyShowLoading, ProxySHideLoading]; // 当值为string类型时，默认'default',启用自带loading,当值为数值时，数组第一个函数触发唤起时触发，第二个函数关闭loading时触发
   onready?:ReadyCallback; // 配置下发后触发
-  useClipboard?:boolean | SetClipboardText; //默认 true, true 代表在唤起时用clipboardToken覆盖剪切板内容;false代表不会覆盖剪切板内容，开发者可以在onready后获取配置下发的token;如果是一个function，则将function返回的string写到剪切板，function的入参是配置下发的clipboardToken，当且仅当开发者需要自定义剪切板内容时使用。特别注意，若服务端剪切板功能关闭，则此配置完全失效。
+  useClipboard?:boolean | SetClipboardText; //默认 true, true 代表在唤起时用clipboardToken覆盖剪切板内容;false代表不会覆盖剪切板内容，开发者可以在onready后获取配置下发的token;如果是一个function，则将function返回的string写到剪切板，function的入参是配置下发的clipboardToken，当且仅当开发者需要自定义剪切板内容时使用。特别注意，若服务端剪切板功能关闭，则此配置完全失效。（2021.04.23上架生效）
 };
 declare class ulink {
   /**
