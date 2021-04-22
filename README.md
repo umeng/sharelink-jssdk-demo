@@ -77,6 +77,7 @@ interface ISolutions {
   type: "scheme" | "universalLink"; // 唤起类型
   downloadUrl: string; // 下载地址
   appkey: string; // 对应appkey
+  clipboardToken?:string; // 友盟后台开启剪切板能力时返回此字段，开启后可提高带参安装匹配成功率。
 }
 interface IWakeup {
   action?: "" | "load" | "click"; // 设置统计上报的唤起方式
@@ -123,6 +124,12 @@ type ProxyShowLoading = {
 type ProxySHideLoading = {
   (): void;
 };
+/**
+ * 自由拼接待写入剪切板内容，入参为服务端下发的token，返回值将被写入剪切板
+ */
+type SetClipboardText = {
+  (clipboardToken:string): string;
+}
 type LinkOption = {
   id: string; // 必填参数,后台生成的linkid
   selector?: string; // 需要点击唤起的元素选择器（采用事件代理模式，不必等元素创建后绑定），示例 '#idxx,#idxxx',参考文档https://developer.mozilla.org/zh-CN/docs/Web/API/Document_Object_Model/Locating_DOM_elements_using_selectors
@@ -131,9 +138,10 @@ type LinkOption = {
   timeout?: number; // 触发弹窗等待超时时间单位毫秒，默认200毫秒，安卓中微信强制为0
   auto?: boolean; // 是否自动唤起,默认false,配置下发后不自动唤起应用(特别注意，部分web容器会限制自动唤起)
   lazy?: boolean; // 是否将配置下发延迟到点击时下发，默认false，如果需延迟到点击时下发配置应设置为true
-  useOpenInBrowerTips?: string | ProxyOpenInBrowerTips; // 是否在微信和qq中使在浏览器中打开的提示，当值为string类型时，默认'default',值为function时，该函数返回蒙层html片段,示例 function(ctx){return `<div style="position:fixed;left:0;top:0;background:rgba(255,0,255,0.5);width:100%;height:100%;z-index:19910324;"></div>`} 。
-  useLoading?: string | [ProxyShowLoading, ProxySHideLoading]; //即将支持 当值为string类型时，默认'default',启用自带loading,当值为数值时，数组第一个函数触发唤起时触发，第二个函数关闭loading时触发
-  onready?: ReadyCallback; // 配置下发后触发
+  useOpenInBrowerTips?: string | ProxyOpenInBrowerTips; // 是否在微信和qq中使在浏览器中打开的提示，当值为string类型时，默认'default',值为function时，需要该函数返回蒙层html片段。
+  useLoading?: string | [ProxyShowLoading, ProxySHideLoading]; // 当值为string类型时，默认'default',启用自带loading,当值为数值时，数组第一个函数触发唤起时触发，第二个函数关闭loading时触发
+  onready?:ReadyCallback; // 配置下发后触发
+  useClipboard?:boolean | SetClipboardText; //默认 true, true 代表在唤起时用clipboardToken覆盖剪切板内容;false代表不会覆盖剪切板内容，开发者可以在onready后获取配置下发的token;如果是一个function，则将function返回的string写到剪切板，function的入参是配置下发的clipboardToken，当且仅当开发者需要自定义剪切板内容时使用。特别注意，若服务端剪切板功能关闭，则此配置完全失效。
 };
 declare class ulink {
   /**
@@ -149,6 +157,7 @@ declare class ulink {
 }
 export as namespace ULink;
 export = ulink;
+
 ```
 
 ### start
@@ -292,6 +301,8 @@ interface PageConfig {
 ```
 
 ## 2. 自定义去浏览器中打开提示蒙层
+在微信中打开
+[体验在线demo](https://share.umeng.com/demo/ulink/index.html?tip=function)
 
 ```html
 <button id="xxl">点我唤起</button>
@@ -310,3 +321,26 @@ interface PageConfig {
   }]);
 </script>
 ```
+## 3.自定义剪切板内容
+特别注意，要去服务端开启剪切板功能
+[体验在线demo](https://share.umeng.com/demo/ulink/index.html?clp=function)
+
+```html
+<button id="xxl">点我唤起</button>
+<script src="https://g.alicdn.com/jssdk/u-link/index.min.js"></script>
+<script>
+  ULink([{
+    id: "linkidxxx",
+    data: {
+      a:4,
+      b:'xx'
+    },
+    selector:"#xxl",
+    useClipboard:function(clipboardToken){
+      // 如果H5以前用到了剪切板，且剪切板内容是 scheme://xxx/xx?key=value这种类型的,考虑到app升级，可以参考这种拼接方式`scheme://xxx/xx?key=value&um_clp=${clipboardToken}`
+      return '用户自定义内容' + clipboardToken;
+    }
+  }]);
+</script>
+```
+
