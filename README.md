@@ -265,7 +265,7 @@ interface PageConfig {
 # 代码示例
 
 ## 1. 自定义打开下载提示行为
-
+[演示demo](https://share.umeng.com/demo/ulink/index.html)
 该代码效果为如未安装则直接跳转下载地址
 
 ```html
