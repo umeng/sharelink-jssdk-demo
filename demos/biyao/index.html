@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="https://g.alicdn.com/code/lib/clipboard.js/2.0.8/clipboard.min.js"></script>
+	<script src="https://share.umeng.com/demo/ulink/index.min.js"></script>
+	<style>
+	.modal-dialog {
+		position: fixed; 
+		left: 0px; top: 0px; 
+		background: rgba(0, 0, 0, 0.8); 
+		width: 100%; 
+		height: 100%; 
+		z-index: 19910324;
+	}
+	</style>
+</head>
+<body>
+	<button id="choujiang" >抽奖按钮</button>
+	<div id="poplayer" class="modal-dialog"  style="display: none;background-color: red;">
+		<button id="linghongbao">领红包</button>
+	</div>
+	<script type="text/javascript">
+		//  初始化待写入剪切版的变量
+		var clipboardText = "";
+		// 这是写给抽奖按钮绑定点击写入剪切版的事件
+		new ClipboardJS('#choujiang', {
+			text: function () {
+				return clipboardText;
+			}
+		});
+		ULink({
+			id: 'usr1cbtpat4292hc',
+			data: {
+			   key1:'value1'
+			},
+			selector: '#linghongbao',// 绑定领红包唤端
+			timeout: 3000,
+			useOpenInBrowerTips: 'default',
+			lazy: false,
+			auto: false,
+			useClipboard: false,
+			proxyOpenDownload: function (defaultAction, ctx) {
+				if (ctx.solution.type === 'scheme') {
+					if (ULink.isWechat || ULink.isQQ) {
+						defaultAction();
+					} else {
+						location.href = ctx.solution.downloadUrl
+					}
+				}
+			},
+			onready: function (ctx) {
+				// ULink 初始化后会从服务端读取配置, 此时给待写入剪切版的内容赋值
+				clipboardText = ctx.solution.clipboardToken
+			}
+		})
+
+		// 点击抽奖按钮，弹出领红包界面
+		document.getElementById("choujiang").onclick = function(){
+			document.getElementById("poplayer").style.display = "block";
+		}
+	</script>
+</body>
+</html>
